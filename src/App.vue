@@ -28,6 +28,8 @@ html {
 
 body {
   font-size: 1.6rem; /* ~16px */
+  background-color: #eeeeee;
+  height: 100%;
   margin: 0;
   font-family: "StagSansWeb-Book", "Verdana";
 }
@@ -35,5 +37,7 @@ body {
 #app {
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 </style>

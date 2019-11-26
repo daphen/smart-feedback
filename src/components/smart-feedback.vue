@@ -1,23 +1,35 @@
 <template>
   <div class="smart-feedback">
-    <h1 class="feedback-header">Smart Feedback</h1>
-
-    <div class="search-row">
-      <pn-datepicker label="Select a date"></pn-datepicker>
-
-      <pn-select placeholder="Select mood">
-        <pn-option value="positive">Positive</pn-option>
-        <pn-option value="mixed">Mixed</pn-option>
-        <pn-option value="negative">Negative</pn-option>
-      </pn-select>
-    </div>
-
-    <ul>
-      <li v-for="(review, i) in reviews" :key="i">
-        <p>{{ review.reviewText }}</p>
-        <p>{{ review.sentiment }}</p>
+    <h2 class="feedback-header">Smart Feedback</h2>
+    <transition-group
+      tag="ul"
+      name="stagger"
+      :style="{ '--total': reviews.length }"
+      class="feedback-list"
+    >
+      <li
+        v-for="(review, i) in reviews"
+        :key="`review-${i}`"
+        :style="{ '--i': i }"
+      >
+        <p class="tiny">{{ review.phrase }}</p>
+        <p class="small">{{ review.sourceText }}</p>
       </li>
-    </ul>
+    </transition-group>
+
+    <pn-tablist
+      :value="activeSentiment"
+      center
+      @change="activeSentiment = $event.target.value"
+    >
+      <pn-tab
+        v-for="(sentiment, i) in sentiments"
+        :key="i"
+        :label="sentiment"
+        :value="sentiment"
+      >
+      </pn-tab>
+    </pn-tablist>
   </div>
 </template>
 
@@ -25,39 +37,33 @@
 export default {
   data: () => ({
     reviews: [],
-    search: ""
+    date: "2018",
+    sentiments: ["POSITIVE", "MIXED", "NEUTRAL", "NEGATIVE"],
+    activeSentiment: "MIXED"
   }),
+  watch: {
+    activeSentiment() {
+      this.reviews = [];
+      setTimeout(() => {
+        this.fetchSentiments();
+      }, 500);
+    }
+  },
   methods: {
     async fetchSentiments() {
-      fetch(
+      const res = await fetch(
         "https://rknjrmkbz9.execute-api.eu-west-1.amazonaws.com/dev/get/feedback",
         {
-          method: "post",
-          mode: "no-cors",
+          method: "POST",
           body: JSON.stringify({
-            sentiment: "NEGATIVE",
-            since: "2018"
+            since: this.date,
+            sentiment: this.activeSentiment
           })
         }
-      )
-        .then(function(response) {
-          if (response.status !== 200) {
-            // eslint-disable-next-line no-console
-            console.log(
-              "Looks like there was a problem. Status Code: " + response.status
-            );
-            return;
-          }
-          // Examine the text in the response
-          response.json().then(function(data) {
-            // eslint-disable-next-line no-console
-            console.log(data);
-          });
-        })
-        .catch(function(err) {
-          // eslint-disable-next-line no-console
-          console.log("Fetch Error :-S", err);
-        });
+      );
+
+      const { Items } = await res.json();
+      this.reviews = Items;
     }
   },
   mounted() {
@@ -67,29 +73,88 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul {
-  padding: 0;
-  list-style-type: none;
-}
-
-li {
-  margin: 1em 0;
-}
-
 .smart-feedback {
   width: 80%;
-  max-width: 60rem;
+  max-width: 50rem;
+  background-color: white;
+  padding: 2.5em 2.5em 0;
+  height: 90vh;
+  overflow: hidden;
+  border-radius: 3rem;
+  box-shadow: 0 0.2rem 1.6rem rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 .feedback-header {
-  text-align: center;
-  margin-bottom: 2rem;
+  font-size: 1.6em;
+  margin: 0 0 1em;
 }
 
-.search-row {
-  display: flex;
+ul {
+  list-style-type: none;
+  padding: 1rem;
+}
+
+ul.feedback-list {
+  overflow-y: scroll;
+  height: 100%;
+  padding-bottom: 20rem;
+
+  li {
+    margin: 1em 0 3em;
+    padding: 2.5em 1.5em 1.5em;
+    border-radius: 3rem;
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2);
+    position: relative;
+
+    p.tiny {
+      color: $postnord-dark;
+      position: absolute;
+      top: 1.2em;
+      right: 3em;
+    }
+  }
+}
+
+pn-tablist {
+  box-shadow: 0.2rem 0 0.3rem rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  padding: 1em 0;
   width: 100%;
-  justify-content: center;
-  align-items: center;
+}
+
+//===========================TRANSITIONS=============================//
+
+.stagger {
+  &-move {
+    transition: opacity 0.5s linear, transform 0.5s ease-in-out;
+  }
+
+  &-leave-active {
+    transition: opacity 0.4s linear,
+      transform 0.4s cubic-bezier(0.64, 0.01, 0.67, 0.92);
+    transition-delay: calc(0.1s * (var(--total) - var(--i)));
+  }
+
+  &-enter-active {
+    transition: opacity 0.4s linear,
+      transform 0.4s cubic-bezier(0.29, 0.15, 0.24, 0.97);
+    transition-delay: calc(0.1s * var(--i));
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+  }
+
+  &-enter {
+    transform: translateY(2rem);
+  }
+  &-leave-to {
+    transform: translateY(-2rem);
+  }
 }
 </style>
