@@ -6209,6 +6209,11 @@ pkg-up@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+pn-design-assets@^1.1.41:
+  version "1.2.14"
+  resolved "https://registry.yarnpkg.com/pn-design-assets/-/pn-design-assets-1.2.14.tgz#137e39796d874304f0b02dfe022c19d8b99c5888"
+  integrity sha512-OTQ7zmPrxfNlZrpbZaQvzgG6OL9QTO/xewlPaUEiW4Cdo3LlRDa9rgZJ7X9xGC4P1q2FYU8FuE9J7zqn0776qA==
+
 portfinder@^1.0.25:
   version "1.0.25"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.25.tgz#254fd337ffba869f4b9d37edc298059cb4d35eca"

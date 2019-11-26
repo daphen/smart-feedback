@@ -1,28 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <feedback-table />
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import FeedbackTable from "./components/smart-feedback";
 
 export default {
-  name: "app",
   components: {
-    HelloWorld
+    FeedbackTable
   }
 };
 </script>
 
 <style lang="scss">
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  font-size: 62.5%; /* sets 1rem to 10px */
+}
+
+body {
+  font-size: 1.6rem; /* ~16px */
+  margin: 0;
+  font-family: "StagSansWeb-Book", "Verdana";
+}
+
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  justify-content: center;
 }
 </style>

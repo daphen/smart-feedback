@@ -1,0 +1,50 @@
+//------WE'LL SET TYPOGRAPHY IN THIS FILE------//
+
+@import "node_modules/pn-design-assets/pn-assets/styles/_pn-fonts.scss";
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+h1.hero {
+  font-size: 3em; // 48px
+}
+
+h1 {
+  font-size: 2em; // 32px
+  font-family: "StagSansWeb-Medium";
+}
+
+h1.bigshot {
+  font-size: 1.5em; // 24px
+}
+
+h2 {
+  font-size: 1.25em; // 20px
+}
+
+p {
+  font-size: 1em; // 16px
+}
+
+p.small {
+  font-size: 0.9em; // ~14px
+}
+
+p.tiny {
+  font-size: 0.8em; // ~12px
+}
+
+.bold {
+  font-family: "StagSansWeb-Medium"; // font-weight: 500;
+}
+
+button {
+  font-family: "StagSansWeb-Book";
+}

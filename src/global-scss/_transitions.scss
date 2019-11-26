@@ -1,0 +1,24 @@
+//---------------IN THIS FILE WE'LL KEEP ALL TRANSITIONS THAT ARE OR GLOBAL---------------//
+//---FOR MORE INFO ABOUT TRANSITIONS IN VUE: https://vuejs.org/v2/guide/transitions.html---//
+
+//-----------------------TRANSITION FOR ROUTE CHANGE-----------------------//
+.page-transition-enter-active,
+.page-transition-leave-active {
+  transition: opacity 0.5s;
+}
+.page-transition-enter,
+.page-transition-leave-to {
+  opacity: 0;
+}
+
+//---------------------------COMMON TRANSITIONS-----------------------------//
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
